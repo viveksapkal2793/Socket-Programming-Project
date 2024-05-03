@@ -212,11 +212,11 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
                     elif header == "to":
 
-                        recipient, message = payload.split(" ", 1)
+                        recipient, message = payload.split(":", 1)
                         server_utils.send_message_to_client(recipient, message, ACTIVE_USERS[self.client_address], ACTIVE_USERS, CLIENTS)
                     
                     elif header == "quiz_answer":
-                        server_utils.evaluate_quiz(payload, quiz_score_file, CLIENTS, ACTIVE_USERS, ANSWERS)
+                        server_utils.evaluate_quiz(payload, quiz_score_file, client_socket, ACTIVE_USERS[self.client_address], ANSWERS)
                         pass
                         
                     else:
