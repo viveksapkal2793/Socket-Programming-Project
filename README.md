@@ -1,7 +1,7 @@
 
 # Networked Chat, File Transfer, and Quiz Application
 
-This project repository contains a set of Python scripts that enable communication between clients and a server over a network. The application supports group chat functionality, file transfer capabilities, and the ability to conduct quizzes.
+This project repository contains a set of Python scripts that enable communication between clients and a server over a network. The application supports group chat functionality, file transfer capabilities, and the ability to conduct quizzes over a command line interface.
 
 ## Setup and Usage
 
