@@ -282,14 +282,14 @@ def start_quiz(directory_name, filename, answer_file, CLIENTS):
     return answers
 
 
-def evaluate_quiz(answer, filename, CLIENTS, ACTIVE_USERS, ANSWERS):
+def evaluate_quiz(answer, filename, client_socket, client_name, ANSWERS):
     """Evaluate quiz answers and store scores.
 
     Input Arguments:
     - answer (str): The answers received from clients.
     - filename (str): The name of the file to store scores.
-    - CLIENTS (list): List of client sockets and addresses.
-    - ACTIVE_USERS (dict): Dictionary of active users and their addresses.
+    - client_socket (socket object): client socket object.
+    - client_name (string): username of client.
     - ANSWERS (list): List of correct answers.
 
     Output Arguments:
@@ -297,17 +297,13 @@ def evaluate_quiz(answer, filename, CLIENTS, ACTIVE_USERS, ANSWERS):
     """
     # Receive answers from clients and evaluate
     scores = {}
-    for _, address in CLIENTS:
-        client_name = ACTIVE_USERS[address]
-        scores[client_name] = 0
+    scores[client_name] = 0
+    answers = answer.split()  # Split the string into individual answers
+    correct_answer = ANSWERS
 
     for i in range(len(ANSWERS)):
-        correct_answer = ANSWERS  
-        for _, address in CLIENTS:
-            client_name = ACTIVE_USERS[address]
-            answers = answer.split()  # Split the string into individual answers
-            if answers[i].lower() == correct_answer[i]:
-                    scores[client_name] += 1
+        if answers[i].lower() == correct_answer[i]:
+           scores[client_name] += 1
 
     directory_name = "all_quiz_scores"
     file_path = os.path.join(os.getcwd(), directory_name, filename)
@@ -316,10 +312,11 @@ def evaluate_quiz(answer, filename, CLIENTS, ACTIVE_USERS, ANSWERS):
         os.makedirs(directory_name)
     
     # Store scores in CSV file
-    with open(file_path, "w") as csv_file:
-        csv_file.write("Username,Score\n")
+    with open(file_path, "a") as csv_file:
+        
         for username, score in scores.items():
             csv_file.write(f"{username},{score}\n")
 
     # Inform clients that quiz is over
-    broadcast_message("info", "Quiz is over. Thank you for participating!\n", CLIENTS)
+    encoded_message = encode_message("info", "Quiz is over. Thank you for participating!\n")
+    client_socket.sendall(encoded_message)
