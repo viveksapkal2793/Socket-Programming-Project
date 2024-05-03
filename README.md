@@ -138,4 +138,3 @@ quiz_answer:<answer1> <answer2> <answer3>
 
 ## Contributors
 - [Vivek Sapkal, B22AI066](https://github.com/viveksapkal2793)
-- Prem Kumar, B22AI031
