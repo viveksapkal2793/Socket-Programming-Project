@@ -1,0 +1,3 @@
+This is a sample text file in server's sample directory 
+for demonstration purposes.
+this can be sent to clients.
